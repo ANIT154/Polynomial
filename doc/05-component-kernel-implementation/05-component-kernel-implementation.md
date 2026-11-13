@@ -1,8 +1,8 @@
 # Portfolio Part 5: Kernel Implementation
 
-- **Name**: <!-- TODO: fill with first and last name (e.g., Brutus Buckeye) and delete this comment -->
-- **Dot Number**: <!-- TODO: fill with OSU dot number (e.g., buckeye.17) and delete this comment -->
-- **Due Date**: <!-- TODO: fill out with due date and time (e.g., 10/17 @ 3:10 PM EST) and delete this comment -->
+- **Name**: Tina He
+- **Dot Number**: he.2721
+- **Due Date**: 11/13 @ 11:59 PM EST
 
 ## Assignment Overview
 
@@ -120,7 +120,36 @@ Below is further rationale/explanation for the rubric items above:
 > discuss how that representation will be restricted (i.e., by convention)
 > and interpreted (i.e., by correspondence).
 
-<!-- TODO: select a representation and explain why -->
+`Polynomial1L` is represented by a single field,
+`NavigableMap<Integer, Integer> terms` (a `java.util.TreeMap`), which maps each
+exponent that has a non-zero coefficient to that coefficient.
+
+Why this representation:
+
+- **Sparse storage.** Only non-zero terms are stored, so `x^1000 + 1` costs two
+  entries. A dense array indexed by exponent would need 1001 slots.
+- **Cheap kernel methods.** `setCoefficient` and `coefficient` are a single
+  `put`/`remove` or `getOrDefault` (O(log n)), and `degree` is `lastKey()`
+  (O(log n)) because the map keeps exponents sorted. With a `HashMap`, `degree`
+  would need a scan of every key.
+- **Easy to keep valid.** The kernel only ever touches one term at a time, so
+  each method only has to protect one entry of the convention.
+- **"L" naming.** The implementation is a thin layer over an existing Java
+  collection, matching the OSU convention for names like `NaturalNumber1L`.
+
+Convention (what values of `terms` are legal):
+
+- every key is `>= 0` (no negative exponents), and
+- every value is `!= 0` (zero coefficients are removed, never stored).
+
+The second rule matters: it means the map has exactly one representation for
+each polynomial, so the zero polynomial is always the empty map and `degree()`
+is always `lastKey()`.
+
+Correspondence (how to read `terms` as a polynomial):
+
+- `this` is the set of terms `{(e, c) : terms maps e to c}`, or equivalently
+  the polynomial `sum over (e, c) in terms of c * x^e`.
 
 > To start making your kernel implementation, make a branch off of main in your
 > new repo called something like `kernel-implementation`. There are many ways to

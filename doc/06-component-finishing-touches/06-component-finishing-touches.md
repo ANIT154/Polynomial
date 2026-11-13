@@ -1,8 +1,8 @@
 # Portfolio Part 6: Finishing Touches
 
-- **Name**: <!-- TODO: fill with first and last name (e.g., Brutus Buckeye) and delete this comment -->
-- **Dot Number**: <!-- TODO: fill with OSU dot number (e.g., buckeye.17) and delete this comment -->
-- **Due Date**: <!-- TODO: fill out with due date and time (e.g., 10/17 @ 3:10 PM EST) and delete this comment -->
+- **Name**: Tina He
+- **Dot Number**: he.2721
+- **Due Date**: 11/13 @ 11:59 PM EST
 
 ## Assignment Overview
 
@@ -307,18 +307,35 @@ Take some time to fill them out honestly.
 > complete the portfolio project, how much better (or worse) do you think you
 > understand software development and why?
 
-<!-- TODO: discuss -->
+This project was really good because it helped me to better understand the
+software development process. The project required us to develop an interface
+for a polynomial component, which is different from most of the other
+assignments because in those we are given the interface to work with. It
+helped me understand what operations the kernel should provide, and how other
+methods can be built on top of them. It also showed me how one API decision
+affects the rest of the software.
 
 > Also, did the portfolio project surface any gaps in your own knowledge of
 > software development. If so, what are those gaps and how did you address them?
 
-<!-- TODO: discuss -->
+At first I wasn't sure how to decide whether a method should be in the
+kernel of a class. For the polynomial component, I ran through the steps of
+reading a single coefficient in the remove-and-restore version of the
+component. To read the coefficient of a term, you have to remove several terms
+from the polynomial, read the value of the coefficient, and then restore those
+terms back to the polynomial. Since I expected to read coefficients a lot, I
+put `coefficient(exponent)` in the kernel of the polynomial component.
 
 > Finally, as a part of completing the portfolio project, to what extent has
 > your perspective of software development changed, if at all? In other words,
 > is software development something you still enjoy? If not, why not?
 
-<!-- TODO: discuss -->
+I still enjoy software development. The project gave me a different
+perspective on the use of a polynomial component. I had anticipated that a
+polynomial component would be useful for finding roots of functions. However,
+the dice example surprised me because it modeled the probability of getting
+each total when rolling two dice. It would be interesting to explore other
+game mechanics that could be modeled with math.
 
 > One of the challenges of completing the portfolio project is picking up a lot
 > of skills on your own. Some of these skills are, of course, software skills.
@@ -326,25 +343,43 @@ Take some time to fill them out honestly.
 > this process. Therefore, the first question is what skills did you pick up
 > through this process?
 
-<!-- TODO: discuss -->
+I had to compare several different designs for the same functionality and
+explain why I chose one over another. In addition, I had to be able to break
+down a design decision into several individual components and compare each of
+those components as well.
 
 > The follow-up question is: could you rephrase these skills you picked up
 > as bullet points that you could put on a resume? Try it below.
 
-<!-- TODO: discuss -->
+- Compared three Java API designs for a polynomial component and chose
+  direct coefficient lookup to simplify access to individual terms.
+- Explored two applications of a Java polynomial component through examples
+  that calculate dice probability distributions and find polynomial roots and
+  extrema.
 
 > Next, how has working on this project affected your career trajectory?
 > In other words, do you now hate the topic you picked? Or, are you even more
 > interested in it? Both outcomes are valuable to your personal development.
 
-<!-- TODO: discuss -->
+I'm still interested in software engineering and AI, and this assignment
+furthered my interest in the topic of optimization. In the root-finding
+example, the derivative can describe the increase, decrease, or local
+maximum/minimum of a function. I am interested in learning more about how this
+is used in the context of machine learning, specifically in the training of a
+model.
 
 > Finally, consider the skills you've picked up and your current career
 > trajectory. What are some things you could do to continue on your
 > career trajectory? Also, who are some mentors you could contact to help
 > you stay on your path?
 
-<!-- TODO: discuss -->
+Next, I would like to try implementing gradient descent for a simple
+function. Then I would like to test the program with different learning rates
+to see how the function behaves when the learning rate is too large. I would
+like to ask my software course TA to look over the way I test the program to
+make sure I am doing it correctly. I would also like to ask an upper-level
+student who has taken a machine learning course what small project helped
+them understand optimization.
 
 ### Changelog
 

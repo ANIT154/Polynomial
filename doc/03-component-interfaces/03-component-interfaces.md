@@ -1,8 +1,8 @@
 # Portfolio Part 3: Component Interfaces
 
-- **Name**: <!-- TODO: fill with first and last name (e.g., Brutus Buckeye) and delete this comment -->
-- **Dot Number**: <!-- TODO: fill with OSU dot number (e.g., buckeye.17) and delete this comment -->
-- **Due Date**: <!-- TODO: fill out with due date and time (e.g., 10/17 @ 3:10 PM EST) and delete this comment -->
+- **Name**: Tina He
+- **Dot Number**: he.2721
+- **Due Date**: 11/13 @ 11:59 PM EST
 
 ## Assignment Overview
 
@@ -132,7 +132,50 @@ hierarchy diagram using whatever tools you would like. Then, include a picture
 of it in this folder. You may also embed it just below using markdown syntax
 (i.e., `![ALT TEXT](path/to/file)`).
 
-<!-- TODO: make a diagram of your component hierarchy then delete this comment -->
+```mermaid
+classDiagram
+    direction BT
+    class Standard~T~ {
+        <<interface>>
+        +clear()
+        +newInstance() T
+        +transferFrom(T source)
+    }
+    class PolynomialKernel {
+        <<interface>>
+        +setCoefficient(int exponent, int coefficient)
+        +coefficient(int exponent) int
+        +degree() int
+    }
+    class Polynomial {
+        <<interface>>
+        +isZero() boolean
+        +leadingCoefficient() int
+        +add(Polynomial p)
+        +subtract(Polynomial p)
+        +scale(int factor)
+        +multiply(Polynomial p)
+        +evaluate(double x) double
+        +differentiate()
+    }
+    class PolynomialSecondary {
+        <<abstract>>
+        +equals(Object obj) boolean
+        +hashCode() int
+        +toString() String
+    }
+    class Polynomial1L {
+        -NavigableMap~Integer, Integer~ terms
+    }
+    PolynomialKernel --|> Standard : extends
+    Polynomial --|> PolynomialKernel : extends
+    PolynomialSecondary ..|> Polynomial : implements
+    Polynomial1L --|> PolynomialSecondary : extends
+```
+
+`Standard` comes from the OSU components library; it is parameterized by
+`Polynomial`, so `newInstance` returns a `Polynomial` and `transferFrom`
+accepts one.
 
 To start making your interfaces, make a branch off of main in your new repo
 called something like `interfaces`. There are many ways to do this, but my

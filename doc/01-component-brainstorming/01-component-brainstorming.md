@@ -1,8 +1,8 @@
 # Portfolio Part 1: Component Brainstorming
 
-- **Name**: <!-- TODO: fill with first and last name (e.g., Brutus Buckeye) then delete this comment -->
-- **Dot Number**: <!-- TODO: fill with OSU dot number (e.g., buckeye.17) then delete this comment -->
-- **Due Date**: <!-- TODO: fill with due date and time (e.g., 10/17 @ 3:10 PM EST) then delete this comment -->
+- **Name**: Tina He
+- **Dot Number**: he.2721
+- **Due Date**: 11/13 @ 11:59 PM EST
 
 ## Assignment Overview
 
@@ -106,11 +106,23 @@ Below is further rationale/explanation for the rubric items above:
 > brainstorming. Plus it helps us get to know you better! Feel free to share
 > images in this section.
 
-<!-- TODO: briefly talk about your interests then delete this comment.
-Also, protip: you can preview what your response looks like by hitting
-the magnifying glass icon in the upper-right corner or pressing CTRL+K and
-then V. This kind of button combination is called a chord, for whatever
-reason -->
+Outside of class, I spend most of my free time playing computer games,
+reading, and making things by hand. Games are what first got me curious about
+programming: I wanted to know how a game decides where a character jumps, how
+an animation speeds up and slows down smoothly, and how the odds behind a dice
+roll or a loot drop are calculated. Reading keeps me curious about how other
+people explain ideas, and crafting has taught me patience and the habit of
+measuring and planning before I cut anything, which turns out to be a pretty
+good habit for writing software too.
+
+My career goal is to become a software engineer, ideally working on AI. A lot
+of the math underneath both games and AI is surprisingly simple at its core:
+curves, rates of change, and probabilities. That is why every design below is
+a polynomial component. Polynomials describe jump arcs and easing curves in
+games, generating functions turn dice probabilities into multiplication, and
+derivatives are the same idea that powers gradient descent in machine
+learning. Building this component is a small way to connect what I enjoy now
+with where I want to go.
 
 ## Assignment
 
@@ -211,68 +223,164 @@ will likely refine your design to make your implementation easier to use.
 
 > Please use this section to share your designs.
 
-- Component Design #1: <!-- TODO: give component a name then delete this comment -->
-  - **Description**:
-    - <!-- TODO: describe your component then delete this comment -->
-  - **Kernel Methods**:
-    - <!-- TODO: list kernel methods then delete this comment -->
-  - **Secondary Methods**:
-    - <!-- TODO: list secondary methods then delete this comment -->
-  - **Additional Considerations** (*note*: "I don't know" is an acceptable
-    answer for each of the following questions):
-    - Would this component be mutable? Answer and explain:
-      - <!-- TODO: provide an argument then delete this comment -->
-    - Would this component rely on any internal classes (e.g., `Map.Pair`)?
-      Answer and explain:
-      - <!-- TODO: provide an argument then delete this comment -->
-    - Would this component need any enums or constants (e.g.,
-      `Program.Instruction`)? Answer and explain:
-      - <!-- TODO: provide an argument then delete this comment -->
-    - Can you implement your secondary methods using your kernel methods?
-      Answer, explain, and give at least one example:
-      - <!-- TODO: provide an argument then delete this comment -->
+Following the note above, all three designs model the same idea, a
+polynomial with integer coefficients, but organize the API in different ways.
 
-- Component Design #2: <!-- TODO: give component a name then delete this comment -->
-  - **Description**:
-    - <!-- TODO: describe your component then delete this comment -->
-  - **Kernel Methods**:
-    - <!-- TODO: list kernel methods then delete this comment -->
-  - **Secondary Methods**:
-    - <!-- TODO: list secondary methods then delete this comment -->
-  - **Additional Considerations** (*note*: "I don't know" is an acceptable
-    answer for each of the following questions):
-    - Would this component be mutable? Answer and explain:
-      - <!-- TODO: provide an argument then delete this comment -->
-    - Would this component rely on any internal classes (e.g., `Map.Pair`)?
-      Answer and explain:
-      - <!-- TODO: provide an argument then delete this comment -->
-    - Would this component need any enums or constants (e.g.,
-      `Program.Instruction`)? Answer and explain:
-      - <!-- TODO: provide an argument then delete this comment -->
-    - Can you implement your secondary methods using your kernel methods?
-      Answer, explain, and give at least one example:
-      - <!-- TODO: provide an argument then delete this comment -->
+All three designs extend `Standard<Polynomial>` (so they get `clear`,
+`newInstance`, and `transferFrom`), keep the kernel minimal, and put the
+algebra in the secondary interface. None of them returns or stores references
+to client objects: methods take and return only `int`s, `double`s, or
+`Polynomial` arguments that are read and restored, so there are no `null`
+values and no aliasing between a polynomial and its client.
 
-- Component Design #3: <!-- TODO: give component a name then delete this comment -->
+- Component Design #1: `Polynomial` (term lookup kernel, **selected**)
   - **Description**:
-    - <!-- TODO: describe your component then delete this comment -->
+    - Models a polynomial such as `3x^2 - x + 5` as a set of terms, each with a
+      non-negative exponent and a non-zero integer coefficient. The kernel
+      only lets a client read and write one coefficient at a time and ask for
+      the degree; all of the algebra is layered on top.
   - **Kernel Methods**:
-    - <!-- TODO: list kernel methods then delete this comment -->
+    - `void setCoefficient(int exponent, int coefficient)`: sets the
+      coefficient of `x^exponent` (0 removes the term)
+    - `int coefficient(int exponent)`: reports the coefficient of
+      `x^exponent` (0 if absent)
+    - `int degree()`: reports the largest exponent (0 for the zero polynomial)
   - **Secondary Methods**:
-    - <!-- TODO: list secondary methods then delete this comment -->
-  - **Additional Considerations** (*note*: "I don't know" is an acceptable
-    answer for each of the following questions):
+    - `boolean isZero()`: reports whether `this` has no terms
+    - `int leadingCoefficient()`: reports the coefficient of the highest term
+    - `void add(Polynomial p)` / `void subtract(Polynomial p)`
+    - `void scale(int factor)`: multiplies every coefficient by `factor`
+    - `void multiply(Polynomial p)`: replaces `this` with `this * p`
+    - `double evaluate(double x)`: reports the value of `this` at `x`
+    - `void differentiate()`: replaces `this` with its derivative
+  - **Additional Considerations**:
     - Would this component be mutable? Answer and explain:
-      - <!-- TODO: provide an argument then delete this comment -->
+      - Yes. It inherits from `Standard`, and the secondary methods such as
+        `add` and `differentiate` update `this` in place, like `NaturalNumber`.
     - Would this component rely on any internal classes (e.g., `Map.Pair`)?
       Answer and explain:
-      - <!-- TODO: provide an argument then delete this comment -->
+      - No. Every method takes or returns `int`s, `double`s, or other
+        `Polynomial`s, so no nested type is needed.
     - Would this component need any enums or constants (e.g.,
       `Program.Instruction`)? Answer and explain:
-      - <!-- TODO: provide an argument then delete this comment -->
+      - Not in the interfaces. The abstract class uses a private constant for
+        hashing, but clients never see it.
     - Can you implement your secondary methods using your kernel methods?
       Answer, explain, and give at least one example:
-      - <!-- TODO: provide an argument then delete this comment -->
+      - Yes. Every secondary method only needs to visit exponents `0` through
+        `degree()`. For example, `evaluate` uses Horner's method: start with
+        0, and for each exponent from `degree()` down to 0, multiply by `x`
+        and add `coefficient(exponent)`.
+    - Is this design feasible in one semester? Answer and explain:
+      - Yes. The kernel is three small methods over one map, and every
+        secondary method is a single loop (or two nested loops for
+        `multiply`) over exponents `0` to `degree()`. Sparse polynomials like
+        `x^1000 + 1` are cheap to store, although loops still visit every
+        exponent up to the degree.
+
+- Component Design #2: `Polynomial` (assemble/disassemble kernel)
+  - **Description**:
+    - The same mathematical model, but with a kernel in the style of OSU's
+      `Queue` and `Map`: terms are added and taken out whole, and every
+      secondary method takes terms out, works on them, and puts them back.
+  - **Kernel Methods**:
+    - `void addTerm(int exponent, int coefficient)`: adds a term with an
+      exponent not already present
+    - `int removeLeadingTerm()`: removes the highest term and reports its
+      coefficient
+    - `int degree()` and `boolean isZero()`
+  - **Secondary Methods**:
+    - The same algebra as Design #1, plus `int coefficient(int exponent)` as a
+      secondary method
+  - **Additional Considerations**:
+    - Would this component be mutable? Answer and explain:
+      - Yes, for the same reasons as Design #1.
+    - Would this component rely on any internal classes? Answer and explain:
+      - Possibly a `Term` pair if `removeLeadingTerm` returned both parts.
+    - Would this component need any enums or constants? Answer and explain:
+      - No.
+    - Can you implement your secondary methods using your kernel methods?
+      Answer, explain, and give at least one example:
+      - Yes. For example, `coefficient(int exponent)` takes terms off the top
+        until it reaches or passes the target exponent, remembers them in a
+        temporary polynomial, and then puts them back:
+
+        ```java
+        public int coefficient(int exponent) {
+            Polynomial removed = this.newInstance();
+            int result = 0;
+            while (!this.isZero() && this.degree() >= exponent) {
+                int e = this.degree();
+                int c = this.removeLeadingTerm();
+                removed.addTerm(e, c);
+                if (e == exponent) {
+                    result = c;
+                }
+            }
+            while (!removed.isZero()) {
+                int e = removed.degree();
+                this.addTerm(e, removed.removeLeadingTerm());
+            }
+            return result;
+        }
+        ```
+
+        Only the terms with exponents at or above the target are taken out,
+        not the whole polynomial. Still, every read has to take terms out and
+        put them back, which makes simple secondary methods longer and slower
+        than in Design #1. This is the main reason Design #1 was chosen.
+    - Is this design feasible in one semester? Answer and explain:
+      - Yes. The kernel maps directly onto a sorted map, and the
+        take-apart-and-restore pattern is the same one used with `Queue` and
+        `Map` in class. The extra bookkeeping in every secondary method is
+        the main cost.
+
+- Component Design #3: `Polynomial` (dense, `NaturalNumber`-style kernel)
+  - **Description**:
+    - Treats a polynomial like a number whose "digits" are coefficients:
+      the kernel can shift the polynomial up by one degree and append a
+      constant term, or shift it down and report the term that falls off.
+  - **Kernel Methods**:
+    - `void multiplyByX(int c)`: replaces `this` with `x * this + c`
+    - `int divideByX()`: replaces `this` with `this / x` and reports the old
+      constant term
+    - `boolean isZero()`
+  - **Secondary Methods**:
+    - The same algebra as Design #1
+  - **Additional Considerations**:
+    - Would this component be mutable? Answer and explain:
+      - Yes, for the same reasons as Design #1.
+    - Would this component rely on any internal classes? Answer and explain:
+      - No.
+    - Would this component need any enums or constants? Answer and explain:
+      - No.
+    - Can you implement your secondary methods using your kernel methods?
+      Answer, explain, and give at least one example:
+      - Yes, with recursion exactly like the `NaturalNumber` labs. The zero
+        polynomial is the base case. Otherwise, `evaluate` takes off the
+        constant term, evaluates the rest recursively, puts the constant term
+        back so `this` is restored, and combines the results:
+
+        ```java
+        public double evaluate(double x) {
+            double result = 0.0;
+            if (!this.isZero()) {
+                int c = this.divideByX();
+                double rest = this.evaluate(x);
+                this.multiplyByX(c);
+                result = c + x * rest;
+            }
+            return result;
+        }
+        ```
+
+        The drawback is that a sparse polynomial like `x^1000 + 1` needs 1001
+        recursive steps.
+    - Is this design feasible in one semester? Answer and explain:
+      - Yes. It mirrors `NaturalNumber`, which we already implemented
+        recursively in Software 1, and a dense array or `Sequence` of
+        coefficients is a natural representation. Its weakness is performance
+        on high-degree sparse polynomials, not difficulty.
 
 ## Post-Assignment
 
